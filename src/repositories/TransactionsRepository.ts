@@ -24,10 +24,8 @@ class TransactionsRepository {
           ...balance,
           [transaction.type]: balance[transaction.type] + transaction.value,
         };
-        return {
-          ...newBalance,
-          total: newBalance.income - newBalance.outcome,
-        };
+        newBalance.total = newBalance.income - newBalance.outcome;
+        return newBalance;
       },
       {
         income: 0,
