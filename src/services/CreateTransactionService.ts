@@ -19,6 +19,10 @@ class CreateTransactionService {
     const insufficientFunds =
       request.type === 'outcome' && total - request.value < 0;
 
+    if (!['outcome', 'income'].includes(request.type)) {
+      throw new Error('Invalid transaction type');
+    }
+
     if (insufficientFunds) {
       throw new Error('Insufficient funds');
     }
