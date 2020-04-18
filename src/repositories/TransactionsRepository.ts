@@ -18,21 +18,24 @@ class TransactionsRepository {
   }
 
   public getBalance(): Balance {
-    return this.transactions.reduce<Balance>(
-      (balance: Balance, transaction: Transaction) => {
-        const newBalance = {
+    const { income, outcome } = this.transactions.reduce(
+      (balance, transaction: Transaction) => {
+        return {
           ...balance,
           [transaction.type]: balance[transaction.type] + transaction.value,
         };
-        newBalance.total = newBalance.income - newBalance.outcome;
-        return newBalance;
       },
       {
         income: 0,
         outcome: 0,
-        total: 0,
       },
     );
+
+    return {
+      income,
+      outcome,
+      total: income - outcome,
+    };
   }
 
   public create(request: Transaction): Transaction {
